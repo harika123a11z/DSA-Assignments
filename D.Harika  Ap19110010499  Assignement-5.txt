@@ -1,0 +1,429 @@
+
+1)INPUT
+
+#include <stdio.h>
+#define a 100
+int top=-1;
+int stack[a];
+
+void push(char b){
+ if(top==a-1){
+printf("Stack Overflow");
+}
+else{
+top++;
+stack[top]=b;
+}
+}
+void pop(){
+if(top==-1){
+printf("Stack is empty");
+}
+else{
+printf("%c",stack[top]);
+top--;
+}
+}
+
+int main(){
+int i,count;
+char string[100];
+printf("Enter a String to Reverse :");
+fgets(string,sizeof(string),stdin);
+for (i = 0; string[i] != '\0'; ++i){
+count++;
+}
+for(i=0;i<count;i++) 
+push(string[i]);  
+for(i=0;i<count;i++)  
+pop();  
+return 0;
+}
+
+OUTPUT
+
+Enter a String to Reverse :harika                                                                                                                                                                                                                                                           
+akirah
+
+
+
+ 2)INPUT
+
+#include<stdio.h>
+#include<string.h>
+#define SIZE 100
+char stack[SIZE];
+int top = -1;
+void push(char item)
+{
+		top = top+1;
+		stack[top] = item;
+}
+
+char pop()
+{
+	char item ;
+	item = stack[top];
+	top = top-1;
+	return item;
+}
+
+int operator(char sym)
+{
+	if(sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym =='^')
+	{
+	return 1;
+	}
+	else
+	{
+	return 0;
+	}
+}
+
+int value(char sym)
+{
+   if(sym == '+' || sym == '-')
+	{
+		return 1;
+	}
+	else if(sym == '*' || sym == '/')
+	{
+		return 2;
+	}
+
+	else if(sym == '^')
+	{
+		return 3;
+	}
+
+	else
+	{
+		return 0;
+	}
+}
+
+void convertion(char a[],char b[])
+{ 
+	int i=0, j=0;
+	char item,x;
+    push('(');                               
+    strcat(a,")");          
+	item=a[i];         
+	while(item != '\0')    
+	{
+		if(item == '(')
+		{
+			push(item);
+		}
+		else if(operator(item)!=1 && item!='(' && item!=')' )
+		{
+			b[j] = item;       
+			j++;
+		}
+		else if(operator(item) == 1)  
+		{
+			x=pop();
+			while(operator(x) == 1 && value(x)>= value(item))
+			{
+				b[j] = x;                  
+				j++;
+				x = pop();                       
+			}
+			push(x);
+
+			push(item);                 
+		}
+		else if(item == ')')       
+		{
+			x = pop();       
+			while(x != '(')      
+			{
+				b[j] = x;
+				j++;
+				x = pop();
+			}
+		}
+
+		i++;
+
+		item = a[i]; 
+	} 
+
+}
+
+int main()
+{
+	char m[SIZE], n[SIZE];         
+	printf("\nEnter the Infix Expression : ");
+    scanf("%[^\n]%*c", m); 
+	convertion(m,n);                  
+	printf("The Postfix Expression: ");
+    printf("%s",n);
+}
+
+
+
+OUTPUT
+
+Enter the infix expression : a+b*c-d
+
+The postfix expressio : abc*+d-
+
+         
+ 3)INPUT
+
+#include <stdio.h>
+#include <stdlib.h> 
+
+char stack1[100], stack2[100];
+int top1 = -1, top2 = -1;
+int count = 0;
+
+void create()
+{
+    top1 = top2 = -1;
+}
+ 
+
+void push1(int data)
+{
+    top1++;
+    stack1[top1] = data;
+}
+ 
+
+int pop1()
+{
+    return(stack1[top1--]);
+
+}
+ 
+
+void push2(int data)
+{
+    top2++;
+    stack2[top2] = data;
+}
+
+ 
+int pop2()
+{
+    return(stack2[top2--]);
+}
+
+void enqueue()
+{
+    int data, i;
+    printf("Enter data into queue: ");
+    scanf("%d", &data);
+    push1(data);
+    count++;
+}
+ 
+void dequeue()
+{
+    int i;
+ 
+    for (i = 0;i <= count;i++)
+    {
+        push2(pop1());
+    }
+    pop2();
+    count--;
+    for (i = 0;i <= count;i++)
+    {
+        push1(pop2());
+    }
+}
+ 
+ 
+void display()
+{
+    int i;
+ 
+    for (i = 0;i <= top1;i++)
+    {
+        printf(" %d ", stack1[i]);
+    }
+}
+
+ 
+void main()
+{
+    int choice;
+    printf("\n1 - Enqueue element into queue");
+    printf("\n2 - Dequeue element from queue");
+    printf("\n3 - Display from queue");
+    printf("\n4 - Exit");
+    create();
+    while (1)
+    {
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            enqueue();
+            break;
+        case 2:
+            dequeue();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            exit(0);
+        default:
+            printf("Wrong choice");
+        }
+    }
+}
+ 
+
+ 
+OUTPUT
+
+1-Enqueue element into queue
+2-Dequeue element from queue
+3-Display from queue
+4-exit
+Enter your choice : 3
+Enter your choice : 4
+
+	 
+4)INPUT
+                                                                                                                                        
+#include<stdio.h> 
+#include<stdlib.h> 
+struct node 
+{ 
+	int key; 
+	struct node *left, *right; 
+}; 
+struct node *newNode(int item) 
+{ 
+	struct node *temp = (struct node *)malloc(sizeof(struct node)); 
+	temp->key = item; 
+	temp->left = temp->right = NULL; 
+	return temp; 
+} 
+
+//insert
+struct node* insert(struct node* node, int key) 
+{ 
+	if (node == NULL) return newNode(key); 
+	if (key < node->key) 
+		node->left = insert(node->left, key); 
+	else if (key > node->key) 
+		node->right = insert(node->right, key); 
+	return node; 
+}
+
+//display(inorder)
+void inorder(struct node *ptr)
+{
+ if(ptr!=NULL)
+ {
+  inorder(ptr->left);
+  printf("%d-->",ptr->key);
+  inorder(ptr->right);
+ }
+}
+
+
+struct node * minValueNode(struct node* node) 
+{ 
+    struct node* current = node; 
+    while (current->left != NULL) 
+        current = current->left; 
+  
+    return current; 
+}
+
+//f. Deletion
+struct node* deleteNode(struct node* root, int key) 
+{ 
+    if (root == NULL) 
+     return root; 
+    if (key < root->key) 
+        root->left = deleteNode(root->left, key); 
+    else if (key > root->key) 
+        root->right = deleteNode(root->right, key); 
+    else
+    { 
+        if (root->left == NULL) 
+        { 
+            struct node *temp = root->right; 
+            free(root); 
+            return temp; 
+        } 
+        else if (root->right == NULL) 
+        { 
+            struct node *temp = root->left; 
+            free(root); 
+            return temp; 
+        } 
+        struct node* temp = minValueNode(root->right); 
+        root->key = temp->key; 
+        root->right = deleteNode(root->right, temp->key); 
+    } 
+    return root; 
+} 
+
+void main() 
+{ 
+ int r,n,c,e,a;
+ struct node* root = NULL;
+ printf("Enter The Root:-");
+ scanf("%d",&r);
+ root = insert(root, r);
+ while(1)
+ {  
+  printf("\n1.Insert\n2.Delete a number\n3.Display(Inorder(Left, Root, Right))\n4.Exit\nEnter you choice:-");
+  scanf("%d",&c);
+  switch(c)
+  {
+   case 1:
+    printf("\nEnter a Element:-");
+    scanf("%d",&n); 
+    insert(root,n);
+    break; 
+   case 2:
+    printf("\nEnter a number to Delete:-");
+    scanf("%d",&e);
+    struct node *p=deleteNode(root,e); 
+    break;
+   case 3:
+    inorder(root); 
+    break;
+   case 4:
+    exit(0);
+  }
+ } 	 
+}  
+
+
+
+OUTPUT
+
+ Enter the root : 3
+  1)Insert
+  2)Delete a number
+  3)Display (inorder(left,root,right))
+  4)Exit
+Enter your choice : 2
+Enter a number to be deleted : 3
+   1)Insert
+   2)Delete a number
+   3)Display(inorder(left,root,right))
+   4)Exit
+Enter your choice : 4
+
+
+
+ 
+
+  
+
+
+
